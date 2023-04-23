@@ -1,49 +1,47 @@
-function print_plots(title, L, t, y, z, rez, sumNM)
-    step = L;
+function print_plots(L, T, F, X, wavelet_matrix)
+    intensity = sum(wavelet_matrix);
 
-    figure('Name', strcat('Исходный ряд. ', title))
-    plot(t, y, 'b-');
+    figure('Name', 'Исходный ряд')
+    plot(T, F, 'b-');
 
-    figure('Name', strcat('Восстановленный ряд. ', title))
-    plot(t, z, 'r-', 'LineWidth', 1)
+    figure('Name', 'Восстановленный ряд')
+    plot(T, X, 'r-', 'LineWidth', 1)
     grid on
-    xticks(t(1:step:end));
+    xticks(T(1:L:end));
 
-    
-    ticksValues = [];
-    for a = t(L+1:step:length(t))
-        ticksValues = [ticksValues, datestr(a)]
+    tick_labels = [];
+    for a = T(L + 1 : L : length(T))
+        tick_labels = [tick_labels, datestr(a)];
     end
 
-    figure('Name', strcat('Восстановленный ряд. ', title))
-    h = subplot(1,1,1);
-    %grid on;
-    imagesc(rez);
-    set(gca);
-    set(h,'XGrid','on','YGrid','on','XLim',[0 length(sumNM)],'XTick', 0:step:length(y), 'XTickLabel', ticksValues);
-    ylabel('scales');
-
-    figure('Name', strcat('Восстановленный ряд. ', title))
-    plot(1:length(sumNM), sumNM, 'LineWidth', 1)
+    figure('Name', 'Вейвлет-преобразование')
+    imagesc(wavelet_matrix)
     grid on
-    xlim([0 length(sumNM)])
-    xticks(0:step:length(y));
-    xticklabels(ticksValues);
-
-
-    figure('Name', strcat('Восстановленный ряд. ', title))
-    h1=subplot(2,1,1);
-    %grid on;
-    imagesc(rez);
-    set(gca);
-    set(h1,'XGrid','on','YGrid','on','XLim',[0 length(sumNM)],'XTick', 0:step:length(y), 'XTickLabel', {});
+    xlim([0 length(intensity)])
+    xticks(0:L:length(F))
+    xticklabels(tick_labels)
     ylabel('scales');
-    subplot(2,1,2);
-    %grid on;
-    plot(1:length(sumNM), sumNM, 'LineWidth', 1)
-    grid on;
-    xlim([0 length(sumNM)])
-    xticks(0:step:length(y));
-    xticklabels(ticksValues);
+
+    figure('Name', 'Оценка интенсивности аномалий')
+    plot(1:length(intensity), intensity, 'LineWidth', 1)
+    grid on
+    xlim([0 length(intensity)])
+    xticks(0:L:length(F))
+    xticklabels(tick_labels);
+
+    figure('Name', 'Обнаруженные аномалии')
+    subplot(2, 1, 1)
+    imagesc(wavelet_matrix)
+    grid on
+    xlim([0 length(intensity)])
+    xticks(0:L:length(F))
+    xticklabels(tick_labels)
+    ylabel('scales')
+    subplot(2, 1, 2)
+    plot(1:length(intensity), intensity, 'LineWidth', 1)
+    grid on
+    xlim([0 length(intensity)])
+    xticks(0:L:length(F))
+    xticklabels(tick_labels);
 
 end
