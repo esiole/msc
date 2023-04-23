@@ -1,11 +1,10 @@
-function [y] = ssa(y, t, L, I)
-    N = length(y);      % Длина исходного ряда
-    y = normalize(y);
+function [F] = ssa(F, L, I)
+    F = normalize(F);
 
     % Stage 1: Decomposition
     % Step 1: Embedding
 
-    N = length(y);
+    N = length(F);
     if L > N / 2 then
         L = N - L;
     end
@@ -14,7 +13,7 @@ function [y] = ssa(y, t, L, I)
     % Time-delayed embedding of y, the trajectory matrix
     X = zeros(L, K);
     for i = 1 : K
-        X(:, i) = y(i : i + L - 1);
+        X(:, i) = F(i : i + L - 1);
     end
     
     % Step 2: Singular value decomposition
@@ -43,11 +42,11 @@ function [y] = ssa(y, t, L, I)
     X = LAMBDA_U(:, I) * V(:, I)';  % Reconstructed components
     
     % Step 4: Diagonal averaging
-    y = zeros(N, 1);
+    F = zeros(N, 1);
     for i = 1 : K + L - 1
         v = adiag(X, i);
-        y(i) = sum(v) / length(v);
+        F(i) = sum(v) / length(v);
     end
-    y = real(y);
-
+    
+    F = real(F);
 end
