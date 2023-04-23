@@ -1,8 +1,8 @@
-function [v] = adiag(x, z)
-	[N, M] = size(x);
-	Z = N + M - 1;
-    z_len = min(min(z, Z - z + 1), min(N, M));
-	i = max(z, N * (z - N + 1));
-	step = N - 1;
-	v = x(i : step : i + step * z_len - 1);
+function [vector] = adiag(matrix, index)
+	[nrows, ncols] = size(matrix);
+	N = nrows + ncols - 1;
+    length = min(min(index, N - index + 1), min(nrows, ncols));
+	i = max(index, nrows * (index - nrows + 1));
+	step = nrows - 1;
+	vector = matrix(i : step : i + step * length - 1);
 end
