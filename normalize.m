@@ -1,4 +1,4 @@
-function [X] = normalize(X)
-    X = X - mean(X);
-    X = X / std(X, 1);
+function [vector] = normalize(vector)
+    vector = vector - mean(vector);
+    vector = vector / std(vector, 1);
 end
