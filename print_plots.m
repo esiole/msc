@@ -10,8 +10,8 @@ function print_plots(L, T, F, X, wavelet_matrix)
     xticks(T(1:L:end));
 
     tick_labels = [];
-    for a = T(L + 1 : L : length(T))
-        tick_labels = [tick_labels, datestr(a)];
+    for tick = T(L + 1 : L : length(T))
+        tick_labels = [tick_labels, datestr(tick, 'dd-mmm-yyyy')];
     end
 
     figure('Name', 'Вейвлет-преобразование')
